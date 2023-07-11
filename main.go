@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/xuri/excelize/v2"
 	"io"
 	"net/http"
@@ -51,12 +52,14 @@ func main() {
 	r := gin.Default()
 	r.POST("/", func(c *gin.Context) {
 		var details struct {
-			SourceFile      string `json:"sourceFile" binding:"required"`
-			DestinationFile string `json:"destinationFile" binding:"required"`
+			SourceFile                  string `json:"sourceFile" binding:"required"`
+			DestinationFile             string `json:"destinationFile" binding:"required"`
+			SourceConnectionString      string `json:"sourceConnectionString" binding:"required"`
+			DestinationConnectionString string `json:"destinationConnectionString"`
 		}
 
 		if c.Bind(&details) == nil {
-
+			client, err := azblob.NewClientFromConnectionString(details.SourceConnectionString, nil)
 		}
 	})
 
